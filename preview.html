@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Preview</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 10px;
+            background-color: #36393f;
+            color: #dcddde;
+            font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.375;
+        }
+        
+        .message {
+            display: flex;
+            padding: 8px 20px;
+            position: relative;
+            word-wrap: break-word;
+            user-select: text;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 16px;
+            flex-shrink: 0;
+            background-color: #7289da;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .message-content {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+        
+        .message-header {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 2px;
+        }
+        
+        .username {
+            font-weight: 500;
+            color: #fff;
+            margin-right: 6px;
+        }
+        
+        .bot-tag {
+            background-color: #5865f2;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 16px;
+            border-radius: 3px;
+            padding: 0 4px;
+            margin-right: 6px;
+            text-transform: uppercase;
+        }
+        
+        .timestamp {
+            color: #a3a6aa;
+            font-size: 12px;
+            line-height: 16px;
+        }
+        
+        .message-text {
+            color: #dcddde;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+        
+        .attachment-container {
+            margin-top: 8px;
+            max-width: 500px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .attachment-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="message">
+        <div class="avatar" id="avatarPreview">WH</div>
+        <div class="message-content">
+            <div class="message-header">
+                <span class="username" id="usernamePreview">Webhook</span>
+                <span class="bot-tag">BOT</span>
+                <span class="timestamp" id="timestamp">Today at 00:00</span>
+            </div>
+            <div class="message-text" id="messagePreview">Your message will appear here</div>
+            <div class="attachment-container" id="attachmentContainer" style="display: none;">
+                <img src="" alt="Attachment" class="attachment-image" id="attachmentPreview">
+            </div>
+        </div>
+    </div>
+    <script>
+
+        function updatePreview(data) {
+            if (data.username) {
+                document.getElementById('usernamePreview').textContent = data.username;
+                const initials = data.username.match(/\b\w/g) || [];
+                document.getElementById('avatarPreview').textContent = 
+                    ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+            }
+            
+            if (data.content) {
+                document.getElementById('messagePreview').textContent = data.content;
+            }
+            
+            if (data.avatar_url) {
+                document.getElementById('avatarPreview').style.backgroundImage = `url('${data.avatar_url}')`;
+                document.getElementById('avatarPreview').style.backgroundSize = 'cover';
+                document.getElementById('avatarPreview').textContent = '';
+            } else {
+                document.getElementById('avatarPreview').style.backgroundImage = '';
+            }
+            
+
+            const attachmentContainer = document.getElementById('attachmentContainer');
+            const attachmentPreview = document.getElementById('attachmentPreview');
+            
+            if (data.image_url) {
+                attachmentPreview.src = data.image_url;
+                attachmentContainer.style.display = 'block';
+            } else {
+                attachmentContainer.style.display = 'none';
+            }
+            
+
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('timestamp').textContent = `Today at ${hours}:${minutes}`;
+        }
+        
+
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'updatePreview') {
+                updatePreview(event.data);
+            }
+        });
+    </script>
+</body>
+</html>
