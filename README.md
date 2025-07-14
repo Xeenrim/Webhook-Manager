@@ -1,8 +1,13 @@
-# Webhook Manager
-
-A simple web application to manage Discord webhooks. Send messages and delete webhooks with an easy-to-use interface.
-
-🌐 **Live Website:** [https://webhookdeletergay.liveblog365.com/](https://webhookdeletergay.liveblog365.com/)
+<div align="center">
+  <img src="https://webhookdeletergay.liveblog365.com/preview-image.png" alt="Webhook Manager Preview" width="600">
+  
+  # Webhook Manager
+  
+  A simple web application to manage Discord webhooks. Send messages and delete webhooks with an easy-to-use interface.
+  
+  [![Website](https://img.shields.io/badge/🌐-Live%20Website-8a5cf6?style=for-the-badge)](https://webhookdeletergay.liveblog365.com/)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+</div>
 
 ## Features
 
