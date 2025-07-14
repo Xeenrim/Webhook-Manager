@@ -57,13 +57,99 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
 
-    if (sendForm) {
-        sendForm.addEventListener('submit', handleSendMessage);
+    // Add validation styles to required fields
+    function validateField(field) {
+        const formGroup = field.closest('.form-group');
+        if (!formGroup) return;
+
+        const isValid = field.checkValidity();
+        
+        if (field.required) {
+            if (field.value.trim() === '') {
+                formGroup.classList.add('invalid');
+                formGroup.querySelector('.error-message').textContent = 'This field is required';
+                return false;
+            }
+            
+            if (field.type === 'url' && field.value.trim() !== '') {
+                try {
+                    new URL(field.value);
+                    formGroup.classList.remove('invalid');
+                } catch (e) {
+                    formGroup.classList.add('invalid');
+                    formGroup.querySelector('.error-message').textContent = 'Please enter a valid URL';
+                    return false;
+                }
+            }
+        }
+        
+        formGroup.classList.remove('invalid');
+        return true;
+    }
+
+    // Prevent form submission and handle validation
+    document.querySelectorAll('form').forEach(form => {
+        form.setAttribute('novalidate', 'novalidate');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let isValid = true;
+            const requiredFields = form.querySelectorAll('input[required], textarea[required]');
+            
+            // Validate all required fields
+            requiredFields.forEach(field => {
+                if (!validateField(field)) {
+                    isValid = false;
+                    // Scroll to first invalid field
+                    if (isValid) {
+                        field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            });
+            
+            // If form is valid, trigger the appropriate handler
+            if (isValid) {
+                if (form.id === 'sendForm') {
+                    handleSendMessage(e);
+                } else if (form.id === 'deleteForm') {
+                    handleDeleteWebhook(e);
+                }
+            }
+        });
+        
+        // Add input event listeners for validation
+        form.querySelectorAll('input[required], textarea[required]').forEach(input => {
+            input.addEventListener('blur', () => validateField(input));
+            input.addEventListener('input', () => {
+                const formGroup = input.closest('.form-group');
+                if (formGroup) {
+                    formGroup.classList.remove('invalid');
+                }
+            });
+        });
+    });
+
+    // Form submission validation
+    function validateForm(form) {
+        let isValid = true;
+        const requiredFields = form.querySelectorAll('input[required], textarea[required]');
+        
+        requiredFields.forEach(field => {
+            if (!validateField(field)) {
+                isValid = false;
+                // Scroll to first invalid field
+                if (isValid) {
+                    field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+        
+        return isValid;
     }
     
-    if (deleteForm) {
-        deleteForm.addEventListener('submit', handleDeleteWebhook);
-    }
+
+    // Form submission is now handled by the form-level event listeners
     
 
     if (deleteWebhookUrlInput) {

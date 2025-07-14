@@ -162,8 +162,26 @@
         }
         
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             position: relative;
+        }
+        
+        .form-group.invalid input:required:invalid,
+        .form-group.invalid textarea:required:invalid {
+            border-color: #ff6b6b;
+            background-color: rgba(255, 107, 107, 0.05);
+        }
+        
+        .form-group .error-message {
+            color: #ff6b6b;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+        
+        .form-group.invalid .error-message {
+            display: block;
         }
         
         label {
@@ -366,14 +384,15 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            right: 0;
+            bottom: 0;
             background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
+            display: flex;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(5px);
+            z-index: 1000;
             opacity: 0;
+            visibility: hidden;
             transition: opacity 0.3s ease;
         }
         
@@ -614,508 +633,251 @@
             border-radius: 4px;
         }
         
-            
-            .delete-message {
-                color: var(--text-muted);
-                margin-bottom: 5px;
-                line-height: 1.5;
-            }
-            
-            .delete-footer {
-                padding: 20px;
-                display: flex;
-                justify-content: center;
-                gap: 15px;
-                background: rgba(255, 77, 79, 0.05);
-            }
-            
-            .delete-cancel {
-                background: transparent;
-                border: 1px solid var(--border-color);
-                color: var(--text-color);
-            }
-            
-            .delete-cancel:hover {
-                background: rgba(255, 255, 255, 0.05);
-                border-color: var(--primary);
-                color: var(--primary);
-            }
-            
-            .delete-confirm {
-                background: linear-gradient(135deg, var(--danger), #ff6b81);
-                color: white;
-                box-shadow: 0 4px 15px rgba(255, 77, 79, 0.4);
-            }
-            
-            .delete-confirm:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(255, 77, 79, 0.5);
-            }
-            
-            .delete-input {
-                width: 100%;
-                padding: 12px 15px;
-                margin: 15px 0;
-                background: rgba(255, 77, 79, 0.1);
-                border: 1px solid var(--danger);
-                border-radius: 8px;
-                color: var(--text-color);
-                font-size: 15px;
-                transition: all 0.3s ease;
-            }
-            
-            .delete-input:focus {
-                outline: none;
-                box-shadow: 0 0 0 3px rgba(255, 77, 79, 0.2);
-            }
-            
-            .delete-note {
-                font-size: 13px;
-                color: var(--text-muted);
-                margin-top: 10px;
-                text-align: center;
-            }
-            
-            /* Confirmation Modal */
-            .modal-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.7);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-                opacity: 0;
-                visibility: hidden;
-                transition: var(--transition);
-                backdrop-filter: blur(5px);
-            }
-            
-            .modal-overlay.active {
-                opacity: 1;
-                visibility: visible;
-            }
-            
-            .modal-content {
-                background: var(--card-bg);
-                border-radius: 16px;
-                padding: 30px;
-                width: 90%;
-                max-width: 450px;
-                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-                transform: translateY(20px);
-                transition: var(--transition);
-                position: relative;
-                border: 1px solid var(--border-color);
-            }
-            
-            .modal-overlay.active .modal-content {
-                transform: translateY(0);
-            }
-            
-            .modal-header {
-                margin-bottom: 20px;
-                text-align: center;
-            }
-            
-            .modal-icon {
-                font-size: 48px;
-                margin-bottom: 16px;
-                color: var(--primary);
-            }
-            
-            .modal-title {
-                font-size: 24px;
-                font-weight: 600;
-                margin-bottom: 8px;
-                color: var(--text-color);
-            }
-            
-            .modal-message {
-                color: var(--text-muted);
-                margin-bottom: 24px;
-                line-height: 1.5;
-            }
-            
-            .modal-footer {
-                display: flex;
-                justify-content: center;
-                gap: 12px;
-            }
-            
-            /* Preview Container */
-            .preview-container {
-                margin: 30px 0;
-                padding: 25px;
-                background: var(--card-bg);
-                border-radius: 16px;
-                border: 1px solid var(--border-color);
-                position: relative;
-                overflow: hidden;
-            }
-            
-            .preview-container::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 4px;
-                background: linear-gradient(90deg, var(--primary), var(--info));
-            }
-            
-            #previewFrame {
-                width: 100%;
-                height: 250px;
-                border: 1px solid var(--border-color);
-                background: #36393f;
-                border-radius: 8px;
-                margin-top: 15px;
-            }
-            
-            .input-group {
-                display: flex;
-                gap: 10px;
-            }
-            
-            .input-group input {
-                flex: 1;
-            }
-            
-            @media (min-width: 768px) {
-                .grid {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 30px;
-                }
-            }
-            
-            /* Scrollbar Styling */
-            ::-webkit-scrollbar {
-                width: 8px;
-                height: 8px;
-            }
-            
-            ::-webkit-scrollbar-track {
-                background: var(--bg-color);
-            }
-            
-            ::-webkit-scrollbar-thumb {
-                background: var(--primary);
-                border-radius: 4px;
-            }
-            
-            ::-webkit-scrollbar-thumb:hover {
-                background: var(--primary-hover);
-            }
-            
-            /* Delete Confirmation Modal */
-            .delete-modal {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.7);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-                opacity: 0;
-                visibility: hidden;
-                transition: var(--transition);
-                backdrop-filter: blur(5px);
-            }
-            
-            .delete-modal.show {
-                opacity: 1;
-                visibility: visible;
-            }
-            
-            .delete-content {
-                background: var(--card-bg);
-                border-radius: 16px;
-                padding: 30px;
-                width: 90%;
-                max-width: 450px;
-                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-                transform: translateY(20px);
-                transition: var(--transition);
-                position: relative;
-                border: 1px solid var(--border-color);
-            }
-            
-            .delete-modal.show .delete-content {
-                transform: translateY(0);
-            }
-            
-            .delete-header {
-                margin-bottom: 20px;
-                text-align: center;
-            }
-            
-            .delete-icon {
-                font-size: 48px;
-                margin-bottom: 16px;
-                color: var(--danger);
-            }
-            
-            .delete-title {
-                font-size: 24px;
-                font-weight: 600;
-                margin-bottom: 8px;
-                color: var(--text-color);
-            }
-            
-            .delete-message {
-                color: var(--text-muted);
-                margin-bottom: 24px;
-                line-height: 1.5;
-            }
-            
-            .delete-footer {
-                display: flex;
-                justify-content: center;
-                gap: 12px;
-            }
-        </style>
-        <script>
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-hover);
+        }
+    </style>
+    <script>
 
-            window.showConfirmation = showConfirmation;
+        window.showConfirmation = showConfirmation;
+        
+
+        const deleteModal = document.getElementById('deleteModal');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        const confirmDeleteInput = document.getElementById('confirmDeleteInput');
+        
+        function showDeleteConfirmation() {
+            deleteModal.classList.add('show');
+            confirmDeleteInput.value = '';
+            confirmDeleteBtn.disabled = true;
             
 
-            const deleteModal = document.getElementById('deleteModal');
-            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-            const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-            const confirmDeleteInput = document.getElementById('confirmDeleteInput');
+            setTimeout(() => {
+                confirmDeleteInput.focus();
+            }, 300);
             
-            function showDeleteConfirmation() {
-                deleteModal.classList.add('show');
-                confirmDeleteInput.value = '';
-                confirmDeleteBtn.disabled = true;
-                
-
-                setTimeout(() => {
-                    confirmDeleteInput.focus();
-                }, 300);
-                
-                return new Promise((resolve) => {
-                    const handleConfirm = () => {
-                        hideDeleteConfirmation();
-                        resolve(true);
-                    };
-                    
-                    const handleCancel = () => {
-                        hideDeleteConfirmation();
-                        resolve(false);
-                    };
-                    
-                    confirmDeleteBtn.addEventListener('click', handleConfirm, { once: true });
-                    cancelDeleteBtn.addEventListener('click', handleCancel, { once: true });
-                    
-
-                    const handleKeyDown = (e) => {
-                        if (e.key === 'Escape') {
-                            handleCancel();
-                        } else if (e.key === 'Enter' && !confirmDeleteBtn.disabled) {
-                            handleConfirm();
-                        }
-                    };
-                    
-                    window.addEventListener('keydown', handleKeyDown);
-                    
-                    // Cleanup
-                    const cleanup = () => {
-                        window.removeEventListener('keydown', handleKeyDown);
-                        confirmDeleteBtn.removeEventListener('click', handleConfirm);
-                        cancelDeleteBtn.removeEventListener('click', handleCancel);
-                    };
-                    
-
-                    deleteModal.addEventListener('transitionend', function handler() {
-                        if (!deleteModal.classList.contains('show')) {
-                            cleanup();
-                            deleteModal.removeEventListener('transitionend', handler);
-                        }
-                    });
-                });
-            }
-            
-            function hideDeleteConfirmation() {
-                deleteModal.classList.remove('show');
-            }
-            
-
-            confirmDeleteInput?.addEventListener('input', (e) => {
-                confirmDeleteBtn.disabled = e.target.value.toLowerCase() !== 'delete';
-            });
-            
-
-            function showNotification(title, message, type = 'info', duration = 5000) {
-                const container = document.getElementById('notification-container');
-                const notification = document.createElement('div');
-                notification.className = `notification ${type} animate__animated animate__fadeInRight`;
-                
-                const icons = {
-                    success: '✅',
-                    error: '❌',
-                    warning: '⚠️',
-                    info: 'ℹ️'
+            return new Promise((resolve) => {
+                const handleConfirm = () => {
+                    hideDeleteConfirmation();
+                    resolve(true);
                 };
                 
-                notification.innerHTML = `
-                    <span class="notification-icon">${icons[type] || 'ℹ️'}</span>
-                    <div class="notification-content">
-                        <div class="notification-title">${title}</div>
-                        <div class="notification-message">${message}</div>
-                    </div>
-                    <button class="notification-close">&times;</button>
-                `;
+                const handleCancel = () => {
+                    hideDeleteConfirmation();
+                    resolve(false);
+                };
                 
-                const closeBtn = notification.querySelector('.notification-close');
-                closeBtn.addEventListener('click', () => {
+                confirmDeleteBtn.addEventListener('click', handleConfirm, { once: true });
+                cancelDeleteBtn.addEventListener('click', handleCancel, { once: true });
+                
+
+                const handleKeyDown = (e) => {
+                    if (e.key === 'Escape') {
+                        handleCancel();
+                    } else if (e.key === 'Enter' && !confirmDeleteBtn.disabled) {
+                        handleConfirm();
+                    }
+                };
+                
+                window.addEventListener('keydown', handleKeyDown);
+                
+                // Cleanup
+                const cleanup = () => {
+                    window.removeEventListener('keydown', handleKeyDown);
+                    confirmDeleteBtn.removeEventListener('click', handleConfirm);
+                    cancelDeleteBtn.removeEventListener('click', handleCancel);
+                };
+                
+
+                deleteModal.addEventListener('transitionend', function handler() {
+                    if (!deleteModal.classList.contains('show')) {
+                        cleanup();
+                        deleteModal.removeEventListener('transitionend', handler);
+                    }
+                });
+            });
+        }
+        
+        function hideDeleteConfirmation() {
+            deleteModal.classList.remove('show');
+        }
+        
+
+        confirmDeleteInput?.addEventListener('input', (e) => {
+            confirmDeleteBtn.disabled = e.target.value.toLowerCase() !== 'delete';
+        });
+        
+
+        function showNotification(title, message, type = 'info', duration = 5000) {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type} animate__animated animate__fadeInRight`;
+            
+            const icons = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            };
+            
+            notification.innerHTML = `
+                <span class="notification-icon">${icons[type] || 'ℹ️'}</span>
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <div class="notification-message">${message}</div>
+                </div>
+                <button class="notification-close">&times;</button>
+            `;
+            
+            const closeBtn = notification.querySelector('.notification-close');
+            closeBtn.addEventListener('click', () => {
+                notification.classList.remove('animate__fadeInRight');
+                notification.classList.add('animate__fadeOutRight');
+                setTimeout(() => notification.remove(), 300);
+            });
+            
+            container.appendChild(notification);
+            
+            if (duration > 0) {
+                setTimeout(() => {
                     notification.classList.remove('animate__fadeInRight');
                     notification.classList.add('animate__fadeOutRight');
                     setTimeout(() => notification.remove(), 300);
+                }, duration);
+            }
+        }
+        
+
+        function showConfirmation(options) {
+            return new Promise((resolve) => {
+                const modal = document.createElement('div');
+                modal.className = 'modal-overlay';
+                
+                const icon = options.icon || '❓';
+                const title = options.title || 'Are you sure?';
+                const message = options.message || 'This action cannot be undone.';
+                const confirmText = options.confirmText || 'Confirm';
+                const cancelText = options.cancelText || 'Cancel';
+                const danger = options.danger || false;
+                
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="modal-icon">${icon}</div>
+                            <h3 class="modal-title">${title}</h3>
+                            <p class="modal-message">${message}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-outline cancel-btn">${cancelText}</button>
+                            <button class="btn ${danger ? 'btn-danger' : 'btn-primary'} confirm-btn">${confirmText}</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                
+
+                setTimeout(() => {
+                    modal.classList.add('active');
+                }, 10);
+                
+
+                modal.querySelector('.confirm-btn').addEventListener('click', () => {
+                    modal.classList.remove('active');
+                    setTimeout(() => {
+                        modal.remove();
+                        resolve(true);
+                    }, 300);
                 });
                 
-                container.appendChild(notification);
+                modal.querySelector('.cancel-btn').addEventListener('click', () => {
+                    modal.classList.remove('active');
+                    setTimeout(() => {
+                        modal.remove();
+                        resolve(false);
+                    }, 300);
+                });
                 
-                if (duration > 0) {
-                    setTimeout(() => {
-                        notification.classList.remove('animate__fadeInRight');
-                        notification.classList.add('animate__fadeOutRight');
-                        setTimeout(() => notification.remove(), 300);
-                    }, duration);
-                }
-            }
-            
 
-            function showConfirmation(options) {
-                return new Promise((resolve) => {
-                    const modal = document.createElement('div');
-                    modal.className = 'modal-overlay';
-                    
-                    const icon = options.icon || '❓';
-                    const title = options.title || 'Are you sure?';
-                    const message = options.message || 'This action cannot be undone.';
-                    const confirmText = options.confirmText || 'Confirm';
-                    const cancelText = options.cancelText || 'Cancel';
-                    const danger = options.danger || false;
-                    
-                    modal.innerHTML = `
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <div class="modal-icon">${icon}</div>
-                                <h3 class="modal-title">${title}</h3>
-                                <p class="modal-message">${message}</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-outline cancel-btn">${cancelText}</button>
-                                <button class="btn ${danger ? 'btn-danger' : 'btn-primary'} confirm-btn">${confirmText}</button>
-                            </div>
-                        </div>
-                    `;
-                    
-                    document.body.appendChild(modal);
-                    
-
-                    setTimeout(() => {
-                        modal.classList.add('active');
-                    }, 10);
-                    
-
-                    modal.querySelector('.confirm-btn').addEventListener('click', () => {
-                        modal.classList.remove('active');
-                        setTimeout(() => {
-                            modal.remove();
-                            resolve(true);
-                        }, 300);
-                    });
-                    
-                    modal.querySelector('.cancel-btn').addEventListener('click', () => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
                         modal.classList.remove('active');
                         setTimeout(() => {
                             modal.remove();
                             resolve(false);
                         }, 300);
-                    });
-                    
-
-                    modal.addEventListener('click', (e) => {
-                        if (e.target === modal) {
-                            modal.classList.remove('active');
-                            setTimeout(() => {
-                                modal.remove();
-                                resolve(false);
-                            }, 300);
-                        }
-                    });
+                    }
                 });
-            }
-        </script>
-    </head>
-    <body>
+            });
+        }
+    </script>
+</head>
+<body>
 
-        <a href="https://github.com/Xeenrim" class="github-corner" aria-label="View source on GitHub" target="_blank" rel="noopener noreferrer" style="position: fixed; top: 20px; right: 20px; z-index: 1000; background: white; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
-            <svg height="32" viewBox="0 0 16 16" width="32" style="fill: #8a5cf6;">
-                <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
-            </svg>
-    </a>
-    <div id="notification-container" class="notification-container"></div>
-    <div class="container animate__animated animate__fadeIn">
-            <h1><i class="fas fa-paper-plane"></i> Webhook Manager</h1>
-            
-            <div class="grid">
+    <a href="https://github.com/Xeenrim" class="github-corner" aria-label="View source on GitHub" target="_blank" rel="noopener noreferrer" style="position: fixed; top: 20px; right: 20px; z-index: 1000; background: white; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
+        <svg height="32" viewBox="0 0 16 16" width="32" style="fill: #8a5cf6;">
+            <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+        </svg>
+</a>
+<div id="notification-container" class="notification-container"></div>
+<div class="container animate__animated animate__fadeIn">
+        <h1><i class="fas fa-paper-plane"></i> Webhook Manager</h1>
+        
+        <div class="grid">
 
-                <div class="card">
-                    <h2><i class="fas fa-paper-plane"></i> Send Webhook</h2>
-                    <form id="sendForm">
-                        <div class="form-group">
-                            <label for="webhookUrl">Webhook URL</label>
-                            <input type="url" id="webhookUrl" required>
+            <div class="card">
+                <h2><i class="fas fa-paper-plane"></i> Send Webhook</h2>
+                <form id="sendForm">
+                    <div class="form-group">
+                        <label for="webhookUrl">Webhook URL <span class="required">*</span></label>
+                        <input type="url" id="webhookUrl" name="webhookUrl" required placeholder="https://discord.com/api/webhooks/...">
+                        <div class="error-message">Please enter a valid webhook URL</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username (optional)</label>
+                        <input type="text" id="username" name="username" placeholder="Custom username">
+                    </div>
+                    <div class="form-group">
+                        <label for="avatarUrl">Avatar URL (optional)</label>
+                        <input type="url" id="avatarUrl" name="avatarUrl" placeholder="https://example.com/avatar.png">
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Message Content <span class="required">*</span></label>
+                        <textarea id="content" name="content" required placeholder="Enter your message here..."></textarea>
+                        <div class="error-message">Please enter a message</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="imageUrl">Image URL (optional)</label>
+                        <div class="input-group">
+                            <input type="url" id="imageUrl" name="imageUrl" placeholder="https://example.com/image.png">
+                            <button type="button" id="clearImage" class="btn btn-outline" style="margin-left: 10px;">
+                                <i class="fas fa-times"></i>
+                            </button>
                         </div>
-                        <div class="form-group">
-                            <label for="username">Username (optional)</label>
-                            <input type="text" id="username">
-                        </div>
-                        <div class="form-group">
-                            <label for="avatarUrl">Avatar URL (optional)</label>
-                            <input type="url" id="avatarUrl">
-                        </div>
-                        <div class="form-group">
-                            <label for="content">Message Content</label>
-                            <textarea id="content" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="imageUrl">Image URL (optional)</label>
-                            <input type="url" id="imageUrl">
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-paper-plane"></i> Send Message
-                        </button>
-                    </form>
-                </div>
-                
-
-                <div class="card">
-                    <h2><i class="fas fa-trash-alt"></i> Delete Webhook</h2>
-                    <form id="deleteForm">
-                        <div class="form-group">
-                            <label for="deleteWebhookUrl">Webhook URL</label>
-                            <input type="url" id="deleteWebhookUrl" required>
-                        </div>
-                        <button type="submit" class="btn btn-danger">
-                            <i class="fas fa-trash-alt"></i> Delete Webhook
-                        </button>
-                    </form>
-                </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
             </div>
-            
-            <!-- Simple Delete Confirmation Modal -->
+
+            <div class="card">
+                <h2><i class="fas fa-trash-alt"></i> Delete Webhook</h2>
+                <form id="deleteForm">
+                    <div class="form-group">
+                        <label for="deleteWebhookUrl">Webhook URL <span class="required">*</span></label>
+                        <input type="url" id="deleteWebhookUrl" name="deleteWebhookUrl" required placeholder="https://discord.com/api/webhooks/...">
+                        <div class="error-message">Please enter a valid webhook URL</div>
+                    </div>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash-alt"></i> Delete Webhook
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Simple Delete Confirmation Modal -->
             <div id="confirmDialog" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
                 <div style="background: var(--card-bg); margin: 15% auto; padding: 25px; border-radius: 8px; max-width: 450px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
                     <div style="text-align: center; margin-bottom: 20px;">
@@ -1141,7 +903,7 @@
             </div>
         </div>
 
-    <!-- Add the external JavaScript file -->
-    <script src="js/main.js"></script>
+    <!-- Add the external JavaScript files -->
+    <script src="script.js"></script>
 </body>
 </html>
